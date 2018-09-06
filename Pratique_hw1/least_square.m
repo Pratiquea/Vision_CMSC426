@@ -17,13 +17,16 @@ Y_3 = data_3.pts(2,:).';
 %optimization parameter
 % theta = [a;b;c];
 
-%using linear regression (backslash)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Homework question 2 - Linear Regression
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%using (backslash)
 format long
 %for data_1
-B = X_1\Y_1;
+B = inv(X_1.'*X_1)*X_1.'*Y_1;  % can also be written as B = X_1\Y_1;
 y_cal = B*X_1;
-figure('Name','using linear regression (backslash)');
+figure('Name','linear regression using backslash');
 subplot(2,2,1);
 scatter(X_1,Y_1);
 hold on
@@ -61,3 +64,8 @@ p = polyfit(X_3,Y_3,1);
 f = polyval(p,X_3); 
 subplot(2,2,3);
 plot(X_3,Y_3,'o',X_3,f,'-');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Homework question 2 - Regularization
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
