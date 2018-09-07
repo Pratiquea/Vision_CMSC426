@@ -1,4 +1,4 @@
-%loading given data set into variables
+% loading given data set into variables
 data_1 = load('hw1_data/data1.mat');
 data_2 = load('hw1_data/data2.mat');
 data_3 = load('hw1_data/data3.mat');
@@ -21,51 +21,51 @@ Y_3 = data_3.pts(2,:).';
 %			Homework question 2 - Linear Regression
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% %using (backslash)
-% format long
-% %for data_1
-% B = inv(X_1.'*X_1)*X_1.'*Y_1;  % can also be written as B = X_1\Y_1;
-% y_cal = B*X_1;
-% figure('Name','linear regression using backslash');
-% subplot(2,2,1);
-% scatter(X_1,Y_1);
-% hold on
-% plot(X_1,y_cal);
-% hold off
-% %for data_2
-% B = X_2\Y_2;
-% y_cal = B*X_2;
-% subplot(2,2,2);
-% scatter(X_2,Y_2);
-% hold on
-% plot(X_2,y_cal);
-% hold off
-% %for data_3
-% B = X_3\Y_3;
-% y_cal = B*X_3;
-% subplot(2,2,3);
-% scatter(X_3,Y_3);
-% hold on
-% plot(X_3,y_cal);
-% hold off
+%using (backslash)
+format long
+%for data_1
+B = inv(X_1.'*X_1)*X_1.'*Y_1;  % can also be written as B = X_1\Y_1;
+y_cal = B*X_1;
+figure('Name','linear regression using backslash');
+subplot(2,2,1);
+scatter(X_1,Y_1);
+hold on
+plot(X_1,y_cal);
+hold off
+%for data_2
+B = X_2\Y_2;
+y_cal = B*X_2;
+subplot(2,2,2);
+scatter(X_2,Y_2);
+hold on
+plot(X_2,y_cal);
+hold off
+%for data_3
+B = X_3\Y_3;
+y_cal = B*X_3;
+subplot(2,2,3);
+scatter(X_3,Y_3);
+hold on
+plot(X_3,y_cal);
+hold off
 
 
 
 
-% %using polyfit
-% p = polyfit(X_1,Y_1,1); 
-% f = polyval(p,X_1); 
-% figure('Name','using polyfit function');
-% subplot(2,2,1);
-% plot(X_1,Y_1,'o',X_1,f,'-');
-% p = polyfit(X_2,Y_2,1); 
-% f = polyval(p,X_2); 
-% subplot(2,2,2);
-% plot(X_2,Y_2,'o',X_2,f,'-');
-% p = polyfit(X_3,Y_3,1); 
-% f = polyval(p,X_3); 
-% subplot(2,2,3);
-% plot(X_3,Y_3,'o',X_3,f,'-');
+%using polyfit
+p = polyfit(X_1,Y_1,1); 
+f = polyval(p,X_1); 
+figure('Name','using polyfit function');
+subplot(2,2,1);
+plot(X_1,Y_1,'o',X_1,f,'-');
+p = polyfit(X_2,Y_2,1); 
+f = polyval(p,X_2); 
+subplot(2,2,2);
+plot(X_2,Y_2,'o',X_2,f,'-');
+p = polyfit(X_3,Y_3,1); 
+f = polyval(p,X_3); 
+subplot(2,2,3);
+plot(X_3,Y_3,'o',X_3,f,'-');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %			Homework question 2 - Regularization
@@ -97,6 +97,7 @@ B = inv(X_2.'*X_2 + lambda)*X_2.'*Y_2;
 y_cal_adjust = B*X_2+10;		%
 subplot(2,2,2);
 scatter(X_2,Y_2);
+
 hold on
 plot(X_2,y_cal_adjust);
 hold off
@@ -109,3 +110,9 @@ scatter(X_3,Y_3);
 hold on
 plot(X_3,y_cal_adjust);
 hold off
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Homework question 2 - RANSAC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% for data_1
