@@ -13,7 +13,7 @@ data_1 = load('hw1_data/data1.mat');
 data_2 = load('hw1_data/data2.mat');
 data_3 = load('hw1_data/data3.mat');
 
-n_samples = max(size(data_1));		%number of input points
+n_samples = max(size(data_1.pts));		%number of input points
 
 %splitting data_1 into vectors
 X_1 = data_1.pts(1,:).';
@@ -36,10 +36,10 @@ for i = 1:ransac_iterations
 	%pick any two random points
 	n = 2;
 
-	indices = randi([1 n_samples],1,2);
-	indice_1 = indices(1,1);
-	indice_2 = indices(1,2);
-
+	indice_1 = randi(n_samples,1)
+	indice_2 = randi(n_samples,1)
+	k = data_1.pts(:,indice_1)
+	l = data_1.pts(:,indice_2)
 	maybe_points = [data_1.pts(:,indice_1) data_1.pts(:,indice_2)];
 	[slope, c] = model_of_line(maybe_points);
 	x_y_inliers = [];

@@ -69,7 +69,7 @@ plot(X_3,Y_3,'o',X_3,f,'-');
 %			Homework question 2 - Regularization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%% for data_1
+%%%%%%%%%%%% for data_1
 % lambda = [-1000000 -100000 -10000 1000 10000 100000];  %created a vector to reduce manual hit and trial effort
 lambda = -100000;
 X_1 = [ones(size(X_1,1),1) X_1];
@@ -86,7 +86,7 @@ X_1 = [ones(size(X_1,1),1) X_1];
 	plot(X_1(:,2:end),y_cal_adjust);
 	hold off;
 % end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% for data_2
+%%%%%%%%%%%%%%%%%%%% for data_2
 	lambda = -300000;
 	X_2 = [ones(size(X_2,1),1) X_2];
 
@@ -98,7 +98,7 @@ X_1 = [ones(size(X_1,1),1) X_1];
 	hold on
 	plot(X_2(:,2:end),y_cal_adjust);
 	hold off
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% for data_3
+%%%%%%%%%%%%%%%%%%%% for data_3
 	lambda = -500000;
 	X_3 = [ones(size(X_3,1),1) X_3];
 
@@ -115,4 +115,4 @@ X_1 = [ones(size(X_1,1),1) X_1];
 %			Homework question 2 - RANSAC
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% for data_1
+%%%%%%%%%% for data_1
