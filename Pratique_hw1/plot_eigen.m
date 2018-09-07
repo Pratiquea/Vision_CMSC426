@@ -22,7 +22,7 @@ covarience_matrix_3 = cov(v5,v6);
 %scatter plotting the data_1
 figure(1);
 % subplot(1,2,1);
-scatter(v1,v2);
+plot(v1,v2,'o');
 hold on;
 x1 = [Evec_1(1,1),-Evec_1(1,1)]*sqrt(Eval_1(1,1)*2);	%scaling the eigen vectors by eigen values
 y1 = [Evec_1(2,1),-Evec_1(2,1)]*sqrt(Eval_1(1,1)*2);
@@ -38,7 +38,7 @@ hold off
 
 %scatter plotting the data_2
 figure(2);
-scatter(v3,v4);
+plot(v3,v4,'o');
 hold on;
 axis([-200,200,-200,200]);
 x1 = [Evec_2(1,1),-Evec_2(1,1)]*sqrt(Eval_2(1,1)*2);	%scaling the eigen vectors by eigen values
@@ -51,7 +51,7 @@ plot(x2,y2,'LineWidth',3);
 hold off;
 %scatter plotting the data_3
 figure(3);
-scatter(v5,v6);
+plot(v5,v6,'o');
 hold on;
 axis([-200,200,-200,200]);
 x1 = [Evec_3(1,1),-Evec_3(1,1)]*sqrt(Eval_3(1,1)*2);	%scaling the eigen vectors by eigen values
