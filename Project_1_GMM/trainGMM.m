@@ -63,7 +63,7 @@ function [mu sigma] = gmm_train(x, k)
 	%reference matlab answers
 	covariance = 100*(reshape(repmat(diag(ones(dim,1)),1,k),[dim, dim, k]));
 	%threshold for comparing means
-	threshold = 1;
+	threshold = 0.001;
 	if max(max(x))<10
     threshold = 10e-5;
 	end
@@ -106,13 +106,19 @@ function [mu sigma] = gmm_train(x, k)
 	end
 	prev_mean = mean_;
 
-    plot(x(:,1),x(:,2),x(:,3));
+    scatter3(x(:,1),x(:,2),x(:,3));
 	hold on
 	error_ellipse(covariance(:,:,1),mean_(1,:))
 	for i = 2:k
 		error_ellipse(covariance(:,:,i),mean_(i,:));
 	end
 	hold off
+	mu = mean_;
+	fprintf('mu size = ')
+	disp(size(mu));
+	sigma = covariance;
+	fprintf('covarience size = ')
+	disp(size(sigma));
 
 end 		%function end
 
@@ -153,4 +159,4 @@ function [posteriors] = single_gaussian_predict_pixel(mean_, cov_, x)
 	likelihood_orange_lab = mvnpdf([x(:,1) x(:,2) x(:,3)], mean_orange_lab, cov_orange_lab);
     posteriors = likelihood_orange_lab;
     % filtered_img = reshape(posterior_orange_lab,640,480);
-ende
+end
