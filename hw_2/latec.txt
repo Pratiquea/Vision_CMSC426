@@ -1,0 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lachaise Assignment
+% LaTeX Template
+% Version 1.0 (26/6/2018)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Marion Lachaise & François Févotte
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{CMSC426: Assignment \#2} % Title of the assignment
+
+\author{Kartik Madhira\\ \texttt{kmadhira@terpmail.umd.edu}} % Author name and email address
+
+\date{University of Maryland --- \today} % University, school and/or department name(s) and a date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+\section*{Question 1(b): Harris Corner Detector properties}
+Below are the properties of harris corner detector: 
+\begin{enumerate}
+   \item Image Rotation
+   \begin{itemize}
+     \item The Harris detector is {\bf invariant} to image rotation since the ellipse formed by the Moment matrix {\bf\it M} for each pixel will remain of the same size (but different directions). Hence, the eigenvalues are preserved.
+        \end{itemize}
+   \item Image Scaling
+   \begin{itemize}
+     \item 
+     
+   \end{itemize}
+   \item Addition of a constant to all pixel values
+   \begin{itemize}
+     \item The Harris corner response will be {\bf invariant} since the gradients along the x and y directions will remain same. 
+     Suppose for a single pixel {\bf $I_{x,y}$} and its neighbor along x-direction be {\bf $I_{x+1,y}$}. Therefore the gradient calculation is:\\
+     $$G_{x}=I_{x+1,y}-I_{x,y}$$
+     
+     Considering addition of a constant term {\it c} to be added to both these pixels, the gradient {\it $G_{x}$} still remains the same and hence no change at all in the Harris corner response.\\
+     $$I_{x+1,y}+c-I_{x,y}-c=G_{x}$$
+   
+     
+   \end{itemize}
+\end{enumerate}
+\section*{}
+   \begin{figure}%
+    \centering
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{2_100k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{2_100k_2} }}%
+    \caption{Response for Window length=2, Corner threshold = 100000}%
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{4_100k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{4_100k_2} }}%
+    \caption{Response for Window length=4, Corner threshold = 100000}%
+    \end{figure}
+
+    \begin{figure}%
+    \centering
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{6_100k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{6_100k_2} }}%
+    \caption{Response for Window length=6, Corner threshold = 100000}%
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{2_1000k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{2_1000k_2} }}%
+    \caption{Response for Window length=2, Corner threshold = 10000000}%
+ 
+\end{figure}
+
+\begin{figure}%
+    \centering
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{4_1000k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{4_1000k_2} }}%
+    \caption{Response for Window length=4, Corner threshold = 10000000}%
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{6_1000k_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{6_1000k_2} }}%
+    \caption{Response for Window length=6, Corner threshold = 10000000}%
+ 
+\end{figure}
+\begin{figure}%
+\centering
+    \subfloat[Image 1]{{\includegraphics[width=7cm]{pure_corners_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{pure_corners_2} }}%
+ 	\caption{Corners only with window length=2 and large threshold}%
+     \subfloat[Image 1]{{\includegraphics[width=7cm]{4_pure_corners_1} }}%
+    \qquad
+    \subfloat[Image 2]{{\includegraphics[width=8cm]{4_pure_corners_2} }}%
+ 	\caption{Corners only with window length=4 and large threshold}%
+\end{figure}
+\end{document}
