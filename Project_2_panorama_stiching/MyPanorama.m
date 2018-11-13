@@ -1,6 +1,12 @@
-path_ = dir('images/input/*.jpg');
+clear;
+path_ = dir('images/input/Set3/*.jpg');
 num_images = length(path_);
 image_tensor = [];
+N_best = 200;
+ssd_ratio_threshold = 0.6;
+best_match_val_threshold = 20;
+x1 = zeros(N_best,num_images);
+y1 = zeros(N_best,num_images);
 for image_ = 1:num_images
 	currImagePath=fullfile(path_(image_).folder, path_(image_).name);
 	current_image = rgb2gray(imread(currImagePath));
@@ -14,16 +20,18 @@ for image_ = 1:num_images
 	% title('cornermetric');
 	local_maxima = imregionalmax(corner_score);
 
-	N_best = 200;
+
 	N_strong= sum(local_maxima(:)==1);
 	[y x] = find(local_maxima);
 
 	figure;
+	s(1) = subplot(1,2,1);
+	title(s(1),'Output after imregionalmax');
 	imshow(image_tensor(:,:,image_));
 	hold on
 	plot(x,y,'rs');
-	title('Output after imregionalmax');
 	hold off
+	pause(2);
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%%%%%%%%%%%%% Adaptive Non-Maxima Supression step %%%%%%%%%%%%%%%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,10 +68,7 @@ for image_ = 1:num_images
 		% sorting the original structure according to the field(or matrix)
 		anms_output_sorted = anms_output(ix);
 
-		clear x1;
-		clear y1;
-		x1 = zeros(N_best,num_images);
-		y1 = zeros(N_best,num_images);
+
 
 	% selecting first N_best elements from the list(ones having the largest distance)
 	for i = 1:N_best
@@ -71,16 +76,18 @@ for image_ = 1:num_images
 		y1(i,image_) = anms_output_sorted(i).y;
 	end
 
-	figure;
+	% figure
+	s(2) = subplot(1,2,2);
+	title(s(2),'After ANMS');
 	imshow(image_tensor(:,:,image_));
 	hold on
 	plot(x1(:,image_),y1(:,image_),'rs');
-	title('After ANMS');
 	hold off
+	pause(1);
 
 	pad = 20;
 	patch_size = 40;
-	sigma_ = 1.2;
+	sigma_ = 2;
 	features = zeros(((patch_size/4)+1)^2,length(x1(:,image_)),num_images);
 	x_padded(:,image_) = x1(:,image_)+(patch_size/2);
 	y_padded(:,image_) = y1(:,image_)+(patch_size/2);
@@ -105,27 +112,88 @@ for image_ = 1:num_images
 	% imshow(filtered_patch);
 end
 
-best_match = ones(length(norm_features(1,:,1)),1,num_images-1)*inf;
-second_best_match =  ones(length(norm_features(1,:,1)),1,num_images-1)*inf;
-for image_ = 1:(num_images-1)
-	for i = 1:length(norm_features(1,:,1))
-		for j = 1:length(norm_features(1,:,1))
-			X = norm_features(:,i,image_)-norm_features(:,j,image_+1);
-			ssd = sum(X(:).^2);
-			if(best_match(i,1,image_)>ssd)
-				second_best_match(i,1,image_) = best_match(i,1,image_);
-				best_match(i,1,image_) = ssd;
-			elseif (second_best_match(i,1,image_)>ssd)
-				second_best_match(i,1,image_) = ssd;		
-			end
-			Intensity_ssd(i,j,image_)  = ssd;
-		end
-	end
-end
+% best_match_val = ones(length(norm_features(1,:,1)),1,num_images-1)*inf;
+% best_match_index = ones(length(norm_features(1,:,1)),1,num_images-1)*NaN;
+% second_best_match_val =  ones(length(norm_features(1,:,1)),1,num_images-1)*inf;
+
+% for image_ = 1:(num_images-1)
+% 	for i = 1:length(norm_features(1,:,1))
+% 		for j = 1:length(norm_features(1,:,1))
+% 			X = norm_features(:,i,image_)-norm_features(:,j,image_+1);
+% 			ssd = sum(X(:).^2);
+% 			if(best_match_val(i,1,image_)>ssd)
+% 				second_best_match_val(i,1,image_) = best_match_val(i,1,image_);
+% 				second_best_match_index(i,1,image_)= best_match_index(i,1,image_);
+
+% 				best_match_val(i,1,image_) = ssd;
+% 				best_match_index(i,1,image_) = j;
+% 			elseif (second_best_match_val(i,1,image_)>ssd)
+% 				second_best_match_val(i,1,image_) = ssd;
+% 				second_best_match_index(i,1,image_) = j;
+% 			end
+% 			Intensity_ssd(i,j,image_)  = ssd;
+% 		end
+% 	end
+% end
 
 
-ssd_ratio = best_match./second_best_match;
-prefered_pts = ssd_ratio>0.8;
+% ssd_ratio = best_match_val./second_best_match_val;
+% prefered_pts = (ssd_ratio<ssd_ratio_threshold)&(best_match_val<best_match_val_threshold);
+
+% %sum(prefered_pts(:,1));
+% best_match_index(~prefered_pts) = NaN;
+% len_vec = [];
+% for image_ = 1:num_images-1
+% 	len_vec = vertcat(len_vec,sum(prefered_pts(:,image_)));
+% end
+% max_vec_len = max(len_vec);
+% match_pt1_tensor = [];			%NaN*ones(max_vec_len,2,num_images-1);
+% match_pt2_tensor = [];		%NaN*ones(max_vec_len,2,num_images-1);
+% for image_ = 1:num_images-1
+% 	match_pt1 = [];
+% 	match_pt2 = [];
+% 	% image_
+% 	for i = 1:length(best_match_index(:,1,1))
+% 		if(~isnan(best_match_index(i,1,image_)))
+% 			match_pt1 = vertcat(match_pt1,[x1(i,image_),y1(i,image_)]);
+% 			match_pt2 = vertcat(match_pt2,[x1(best_match_index(i,1,image_),image_+1),y1(best_match_index(i,1,image_),image_+1)]);
+% 		end		
+% 	end
+% 	% length(match_pt1)
+% 	if(length(match_pt1)<max_vec_len)
+% 		for m = length(match_pt1)+1 : max_vec_len
+% 			match_pt1(m,:)= [NaN, NaN];
+% 		end
+% 	end
+% 	if(length(match_pt2)<max_vec_len)
+% 		for m = length(match_pt2)+1 : max_vec_len
+% 			match_pt2(m,:)= [NaN, NaN];
+% 		end
+% 	end
+% 	match_pt1_tensor = cat(3,match_pt1_tensor,match_pt1);
+% 	match_pt2_tensor = cat(3,match_pt2_tensor,match_pt2);
+% end
+
+% for image_ = 1:num_images-1
+% 	match_pt1 = [];
+% 	match_pt2 = [];
+% 	for i = 1:length(match_pt1_tensor(:,1,1));
+% 		match_pt1(i,:) = match_pt1_tensor(i,:,image_);
+% 		match_pt2(i,:) = match_pt2_tensor(i,:,image_);
+% 	end
+% 	match_pt1 = match_pt1(~any(isnan(match_pt1), 2),:);
+% 	% swap = match_pt1(:,1);
+% 	% match_pt1(:,1) = match_pt1(:,2);
+% 	% match_pt1(:,2) = swap;
+% 	match_pt2 = match_pt2(~any(isnan(match_pt2), 2),:);
+% 	% swap = match_pt2(:,1);
+% 	% match_pt2(:,1) = match_pt2(:,2);
+% 	% match_pt2(:,2) = swap;
+
+% 	figure
+% 	idk = showMatchedFeatures(image_tensor(:,:,image_),image_tensor(:,:,image_+1),match_pt1, match_pt2,'montage');
+% 	title('matched features');
+% end
 
 
 %gauss = fspecial('gaussian', window_size, sigma);
@@ -133,3 +201,4 @@ prefered_pts = ssd_ratio>0.8;
 function dist = cal_Euclidean_Distance(x,y,a,b)
 	dist = (x-a)^2+(y-b)^2;
 end
+
