@@ -35,12 +35,15 @@ end
 
 LocalSamples = [WindowCentersX WindowCentersY];
 LocalSamples = round(LocalSamples);
+actual_length = floor(length(LocalSamples)/2);
+LocalSamples = round(LocalSamples(1:actual_length,:));
 
 if ShowWindows 
     imshow(IMG);
     hold on
 end
-    
+    % sprintf('\n number of local windows = ');
+    % disp(length(LocalSamples));
 for i = 1:length(LocalSamples)
     x = LocalSamples(i,1);
     y = LocalSamples(i,2);

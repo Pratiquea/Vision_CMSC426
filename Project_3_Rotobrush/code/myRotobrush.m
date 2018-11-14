@@ -8,7 +8,7 @@
 WindowWidth = 40;  
 ProbMaskThreshold = -1; 
 NumWindows= 30; 
-BoundaryWidth = 4;
+BoundaryWidth = 3;
 
 % Load images:
 fpath = '../input';
@@ -48,7 +48,6 @@ imshow(imoverlay(images{1}, boundarymask(mask,8),'red'));
 ColorModels = ...
     initColorModels(images{1},mask,mask_outline,LocalWindows,BoundaryWidth,WindowWidth);
 
-showColorConfidences(images{1}, mask_outline, ColorModels, LocalWindows, WindowWidth);
 % You should set these parameters yourself:
 fcutoff = 0.85;
 SigmaMin = 2;
@@ -59,6 +58,8 @@ ShapeConfidences = ...
     initShapeConfidences(mask_outline,LocalWindows,ColorModels,...
     WindowWidth, SigmaMin, A, fcutoff, R);
 
+showColorConfidences(images{1}, mask_outline, ColorModels, LocalWindows, WindowWidth);
+
 % Show initial local windows and output of the color model:
 imshow(images{1})
 hold on
@@ -68,15 +69,16 @@ set(gca,'position',[0 0 1 1],'units','normalized')
 F = getframe(gcf);
 [I,~] = frame2im(F);
 
-
+step_ = 5;
 %%% MAIN LOOP %%%
 % Process each frame in the video.
 for prev=1:(length(files)-1)
-    curr = prev+1;
+    curr = prev+step_;
     fprintf('Current frame: %i\n', curr)
     
     %%% Global affine transform between previous and current frames:
-    [warpedFrame, warpedMask, warpedMaskOutline, warpedLocalWindows] = calculateGlobalAffine(images{prev}, images{curr}, mask, LocalWindows);
+    [warpedFrame, warpedMask, warpedMaskOutline, warpedLocalWindows] = calculateGlobalAffine(...
+        images{prev}, images{curr}, mask, mask_outline,LocalWindows);
     
     %%% Calculate and apply local warping based on optical flow:
     NewLocalWindows = ...
@@ -126,7 +128,7 @@ for prev=1:(length(files)-1)
 
     imshow(images{curr})
     hold on
-    showLocalWindows(LocalWindows,WindowWidth,'r.');
+    showLocalWindXows(LocalWindows,WindowWidth,'r.');
     hold off
     set(gca,'position',[0 0 1 1],'units','normalized')
     F = getframe(gcf);
