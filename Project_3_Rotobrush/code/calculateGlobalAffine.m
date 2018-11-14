@@ -42,22 +42,32 @@ IM2 = rgb2gray(IMG2);
 	[tform,inlierPtsDistorted,inlierPtsOriginal] = ...
     estimateGeometricTransform(matchedPoints1,matchedPoints2,'affine');
 
-	% Recover the original image from the distorted image.
+	% Recover the original image from the  image 2.
 	outputView = imref2d(size(IM1));
 	IM1_warped = imwarp(IM2,tform,'OutputView',outputView);
 	outputView = imref2d(size(IMG1));
 	IMG1_warped = imwarp(IMG2,tform,'OutputView',outputView);
 	WarpedFrame = IMG1_warped;
 	WarpedMask = imwarp(Mask,tform,'OutputView',outputView);
-	figure;
-	imshowpair(WarpedMask,Mask);
-	WarpedMaskOutline = bwperim(WarpedMask,4);
+
 	%debugging; original and warped image montage
-	figure;
-	imshowpair(WarpedMaskOutline,MaskOutline);
+	% figure;
+	% imshowpair(WarpedMask,Mask);
+	WarpedMaskOutline = bwperim(WarpedMask,4);
+	
+	% figure;
+	% imshowpair(WarpedMaskOutline,MaskOutline);
 	% figure; 
 	% imshowpair(IMG1,IMG1_warped,'montage'); 
 	% title('Warped image');
+	WarpedLocalWindows = [];
+	for row = 1:length(Windows)
+		u = Windows(row,1);
+		v = Windows(row,2);
+		[x y] = transformPointsForward(tform,u,v);
+		WarpedLocalWindows(row,1) = x;
+		WarpedLocalWindows(row,2) = y;
+	end
 
 	%
 
