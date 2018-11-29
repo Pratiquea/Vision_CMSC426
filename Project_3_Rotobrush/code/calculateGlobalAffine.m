@@ -12,12 +12,12 @@ IM2 = rgb2gray(IMG2);
 
 %detecting corner points
 	%selecting only points that lie on object that we are tracking
-	[mask_coordinates(:,1) mask_coordinates(:,2)] = find(Mask);
+	[mask_coordinates(:,1), mask_coordinates(:,2)] = find(Mask);
 	min_x = min(mask_coordinates(:,1));
 	max_x = max(mask_coordinates(:,1));
 	min_y = min(mask_coordinates(:,2));
 	max_y = max(mask_coordinates(:,2));
-	allowance = 10;
+	allowance = 20;
 	%debugging mask values
 	% figure
 	% imshow(IM1);
@@ -35,11 +35,11 @@ IM2 = rgb2gray(IMG2);
 	matchedPoints1 = vpts1(indexPairs(:,1));
 	matchedPoints2 = vpts2(indexPairs(:,2));
 	%debug surf features
-	% figure; showMatchedFeatures(IM1,IM2,matchedPoints1,matchedPoints2);
-	% legend('matched points 1','matched points 2');
+	figure; showMatchedFeatures(IM1,IM2,matchedPoints1,matchedPoints2,'montage');
+	legend('matched points 1','matched points 2');
 
 	%estimating affine transform
-	[tform,inlierPtsDistorted,inlierPtsOriginal] = ...
+	[tform,~,~] = ...
     estimateGeometricTransform(matchedPoints1,matchedPoints2,'affine');
 
 	% Recover the original image from the  image 2.
@@ -68,10 +68,6 @@ IM2 = rgb2gray(IMG2);
 		WarpedLocalWindows(row,1) = x;
 		WarpedLocalWindows(row,2) = y;
 	end
-
-	%
-
-%
 
 end
 

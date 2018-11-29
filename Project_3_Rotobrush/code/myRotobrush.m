@@ -11,7 +11,7 @@ NumWindows= 30;
 BoundaryWidth = 3;
 
 % Load images:
-fpath = '../input';
+fpath = '../frames/Frames1';
 files = dir(fullfile(fpath, '*.jpg'));
 imageNames = zeros(length(files),1);
 images = cell(length(files),1);
@@ -29,9 +29,9 @@ for i=1:length(files)
 end
 
 % NOTE: to save time during development, you should save/load your mask rather than use ROIPoly every time.
-% mask = roipoly(images{1});
-Sss = load('turtle_mask.mat');
-mask = Sss.mask;
+mask = roipoly(images{1});
+% Sss = load('turtle_mask.mat');
+% mask = Sss.mask;
 
 imshow(imoverlay(images{1}, boundarymask(mask,8),'red'));
 % set(gca,'position',[0 0 1 1],'units','normalized')
@@ -61,10 +61,10 @@ ShapeConfidences = ...
 showColorConfidences(images{1}, mask_outline, ColorModels, LocalWindows, WindowWidth);
 
 % Show initial local windows and output of the color model:
-imshow(images{1})
-hold on
-showLocalWindows(LocalWindows,WindowWidth,'r.');
-hold off
+% imshow(images{1})
+% hold on
+% showLocalWindows(LocalWindows,WindowWidth,'r.');
+% hold off
 set(gca,'position',[0 0 1 1],'units','normalized')
 F = getframe(gcf);
 [I,~] = frame2im(F);
@@ -79,7 +79,12 @@ for prev=1:(length(files)-1)
     %%% Global affine transform between previous and current frames:
     [warpedFrame, warpedMask, warpedMaskOutline, warpedLocalWindows] = calculateGlobalAffine(...
         images{prev}, images{curr}, mask, mask_outline,LocalWindows);
-    
+    %debug global affine
+%     figure;
+%     imshow(warpedFrame);
+%     hold on
+%     showLocalWindows(warpedLocalWindows,WindowWidth,'r.');
+%     hold off
     %%% Calculate and apply local warping based on optical flow:
     NewLocalWindows = ...
         localFlowWarp(warpedFrame, images{curr}, warpedLocalWindows,warpedMask,WindowWidth);

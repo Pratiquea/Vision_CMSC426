@@ -27,8 +27,8 @@ for win = 1:length(LocalWindows)
 	% d = reshape(bwdist(MaskOutline( (y_c-WindowWidth/2):(y_c+WindowWidth/2),(x_c-WindowWidth/2):(x_c+WindowWidth/2) )),[mask_elems,1]);
 	d = bwdist(window_maskoutline);
 	ShapeConfidences(win).Confidences = 1-exp(-d.^2/sigma_s^2);
-	% figure(win);
-	% imshow(ShapeConfidences(win).Confidences);
+% 	figure(win);
+% 	imshow(ShapeConfidences(win).Confidences);
 end
 
 end
